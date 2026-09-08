@@ -106,7 +106,98 @@ that do. We have verified that Oniguruma is reasonably fast and supports negativ
 the regex package in Python is, if anything, even faster
 
 
+## Problem (train_bpe_tinystories): BPE Training on TinyStories (2 points)
 
+* How much time and memory did training take?
+ * Time: 121.86 seconds
+ * Memory: 132.32 MB
+* Longest token in vocabulary is 15 in length and its English word "accomplishment"
+* Yes, the token makes sense in the corups.
+
+```
+Finding boundaries complete: 0.00 seconds
+Produced 17 boundaries, to be processed with 16 cores
+Pre-tokenization completes (to start BPE): 87.12 seconds
+BPE completes: 34.74 seconds
+Completes in total: 121.86 seconds
+Longest token is 15: [32, 97, 99, 99, 111, 109, 112, 108, 105, 115, 104, 109, 101, 110, 116]
+Current memory usage: 43.06 MB
+Peak memory usage:    132.42 MB
+```
+
+```
+Inspecting data/TinyStoriesV2-GPT4-train.txt...
+Longest token [32, 97, 99, 99, 111, 109, 112, 108, 105, 115, 104, 109, 101, 110, 116]
+
+Sequence found at byte offset: 963592
+--- Decoded Context Around Match ---
+ original movie he had chosen was the same movie he watched every week at the theater! 
+Toby was really proud that he had chosen the original movie. He smiled and looked over at his dad with a look of accomplishment. His dad smiled too, proud that Toby had chosen so wisely.
+<|endoftext|>
+
+Once upon a time there was a girl who loved to go for walks. On this day, she decided to go for a walk in the park.
+When she 
+------------------------------------
+Sequence found at byte offset: 2660170
+--- Decoded Context Around Match ---
+?”
+Dad explained that he had to be very, very careful when using the knife and then handed it to Paul. After a few tries, Paul successfully united the two pieces of wood. He beamed with pride at his accomplishment!
+<|endoftext|>
+One day, a cat and her baby were walking in the woods. The baby cat was very small and had a long tail. They were looking for food. The baby cat asked her mother, "When will I become b
+------------------------------------
+Sequence found at byte offset: 3841720
+--- Decoded Context Around Match ---
+r's bossiness, the girl never was ignorant and would always do as she was asked. 
+Finally, after many trips back and forth, they had enough fruit to last them for a while. The girl was so proud of her accomplishment and thankful that she had listened to her brother, evenwhen she was exhausted.
+<|endoftext|>
+
+Once there was a brilliant caterpillar who lived in a sunny garden. Every day the caterpillar crawled ar
+```
+
+## Problem (train_bpe_expts_owt): BPE Training on OpenWebText (2 points)
+
+> What is the longest token in the vocabulary? Does it make sense?
+It is ÃÂ repeating 15 times, yes, it makes sense as it's basically mojibakes which happened a lot in OpenWebText as a common decoding error, per BPE it
+has high value in compression into a one single token representation.
+
+* Compare and contrast the tokenizer that you get training on TinyStories versus OpenWebText.
+
+```
+❯ uv run cs336_basics/tokenization
+Finding boundaries complete: 0.01 seconds
+Produced 121 boundaries, to be processed with 12 cores
+Pre-tokenization completes (to start BPE): 447.43 seconds
+BPE completes: 7825.32 seconds
+Completes in total: 8272.76 seconds
+Longest token is 64: [195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130, 195, 131, 195, 130]
+Current memory usage: 3189.97 MB
+Peak memory usage:    13492.21 MB
+```
+
+```
+Sequence found at byte offset: 474540134
+--- Decoded Context Around Match ---
+ire is tremendous 4 b/c of the performance - March 23, 2005not that bad
+
+Reviewer: The Sound Jester - favorite - January 7, 2005
+
+Subject: How bout the sound Who cares how great the show is if you canÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ
+------------------------------------
+Sequence found at byte offset: 474540198
+--- Decoded Context Around Match ---
+hat bad
+
+Reviewer: The Sound Jester - favorite - January 7, 2005
+
+Subject: How bout the sound Who cares how great the show is if you canÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ
+------------------------------------
+Sequence found at byte offset: 474540262
+--- Decoded Context Around Match ---
+
+
+Subject: How bout the sound Who cares how great the show is if you canÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ
+------------------------------------
+```
 
 
 ---
