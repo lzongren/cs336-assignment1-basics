@@ -15,12 +15,27 @@ def per_core_pre_tokenization(file_path, start: int, end: int, special_tokens: l
         return Counter(_pre_tokenize(chunk, special_tokens))
 
 
-def _pre_tokenize(chunk: str, special_tokens: list[str]) -> Iterator[str]:
-    for part in re.split("|".join(special_tokens), chunk):
-        for m in re.finditer(PAT, part):
-            if m:
-                full_hit = m.group(0)
-                yield full_hit
+def _pre_tokenize(chunk: str, special_tokens: list[str], preserve_delimiter: bool = False) -> Iterator[str]:
+    if not special_tokens:
+        for m in re.finditer(PAT, chunk):
+            full_hit = m.group(0)
+            yield full_hit
+    else:
+        # prefer longer special tokens
+        special_tokens = sorted(special_tokens, key=lambda token: -len(token))
+
+        pattern = "|".join(re.escape(d) for d in special_tokens)
+        if preserve_delimiter:
+            pattern = f"({pattern})"
+
+        for part in re.split(pattern, chunk):
+            # special token itself
+            if part in special_tokens:
+                yield part
+            else:
+                for m in re.finditer(PAT, part):
+                    full_hit = m.group(0)
+                    yield full_hit
 
 
 def _identify_merge(pair_counts: Counter[Pair]) -> Pair | None:
