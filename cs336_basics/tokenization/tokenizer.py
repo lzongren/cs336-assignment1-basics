@@ -1,5 +1,6 @@
 from collections.abc import Iterable, Iterator
 
+from cs336_basics.tokenization import serdes
 from cs336_basics.tokenization.bpe_merge import _pre_tokenize
 from cs336_basics.tokenization.datamodel import Merges, Vocab
 
@@ -22,7 +23,10 @@ class Tokenizer:
 
     @classmethod
     def from_files(cls, vocab_filepath: str, merges_filepath: str, special_tokens: list[str] | None = None) -> None:
-        pass
+        vocab = serdes.vocab_from_file(vocab_filepath)
+        merges = serdes.merges_from_file(merges_filepath)
+
+        return Tokenizer(vocab, merges, special_tokens)
 
     def encode(self, text: str) -> list[int]:
         return list(self._encode_iterable(text))

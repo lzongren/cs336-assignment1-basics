@@ -199,6 +199,28 @@ Subject: How bout the sound Who cares how great the show is if you canÃÂÃÂÃ
 ------------------------------------
 ```
 
+## Problem (tokenizer_experiments): Experiments with tokenizers (4 points)
+
+#### (a) Sample 10 documents from TinyStories and OpenWebText. Using your previously-trained TinyStories and OpenWebText tokenizers (10K and 32K vocabulary size, respectively), encode these sampled documents into integer IDs. What is each tokenizer’s compression ratio (bytes/token)?
+
+* TinyStories tokenizer: 4.00 bytes/token
+* OpenWebText: 4.66 bytes/token
+
+#### (b) What happens if you tokenize your OpenWebText sample with the TinyStories tokenizer? Compare the compression ratio and/or qualitatively describe what happens.
+
+* Using TinyStories on OpenWebText: 3.19 bytes/token
+
+This is due to OpenWebText is a much larger dataset than TinyStories in which the tokenier is trained on, there's quite some
+higher compression merges couldn't be obtained from TinyStories tokenizer.
+
+Therefore the compression ratio on OpenWebText is lower.
+
+
+#### (c) Estimate the throughput of your tokenizer (e.g., in bytes/second). How long would it take to tokenize the Pile dataset (825GB of text)?
+
+The throughput is 1402210.15 bytes/second, estimating taking 6 days, 19 hours, 25 minutes, and 56 seconds to tokensize Pile dataset.
+
+#### (d) Using your TinyStories and OpenWebText tokenizers, encode the respective training and development datasets into a sequence of integer token IDs. We’ll use this later to train our language model. We recommend serializing the token IDs as a NumPy array of datatype `uint16`. Why is uint16 an appropriate choice?
 
 ---
 ## Appendix
