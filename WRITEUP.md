@@ -215,12 +215,14 @@ higher compression merges couldn't be obtained from TinyStories tokenizer.
 
 Therefore the compression ratio on OpenWebText is lower.
 
-
 #### (c) Estimate the throughput of your tokenizer (e.g., in bytes/second). How long would it take to tokenize the Pile dataset (825GB of text)?
 
 The throughput is 1402210.15 bytes/second, estimating taking 6 days, 19 hours, 25 minutes, and 56 seconds to tokensize Pile dataset.
 
 #### (d) Using your TinyStories and OpenWebText tokenizers, encode the respective training and development datasets into a sequence of integer token IDs. We’ll use this later to train our language model. We recommend serializing the token IDs as a NumPy array of datatype `uint16`. Why is uint16 an appropriate choice?
+
+`unit16` is a fixed size representation comparing to using unbounded Python primitive `int` represenetation, which allows to also perform
+multi-processing and merging the final file with e.g. `open_memmap` and merging each task's processing result.
 
 ---
 ## Appendix

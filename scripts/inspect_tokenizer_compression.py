@@ -41,6 +41,9 @@ def _sample_documents(file_path: str, special_tokens: list[str], max_docs: int |
                 docs += 1
                 prev_idx = index
 
+                if docs % 10000 == 0:
+                    logging.info(f"Processed {docs} docs in {file_path}")
+
                 if max_docs is not None and docs >= max_docs:
                     break
 
